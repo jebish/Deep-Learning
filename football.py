@@ -5,7 +5,7 @@ from sklearn.model_selection import train_test_split as tts
 data=sio.loadmat('data.mat')
 
 
-seed=3
+seed=1
 x_train=data['X'].T
 y_train=data['y'].T
 x_test=data['Xval'].T
@@ -17,9 +17,9 @@ y_test=data['yval'].T
 
 print(x_train.shape,x_test.shape,y_train.shape)
 
-parameters=model(x_train,y_train,layer_dims=[x_train.shape[0],20,3,1],learning_rate=0.3,seed=seed,num_of_iteration=30000,lamda_=0.7)
+parameters=model(x_train,y_train,layer_dims=[x_train.shape[0],20,3,1],learning_rate=0.5,seed=seed,num_of_iteration=30000,lamda_=0.6,keep_prob=1)
 
-print(parameters['w1'][4,])
+# print(parameters['w1'][4,])
 
 y_hat=predict(x_test,parameters)
 print(y_hat)
