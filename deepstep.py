@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 from math import exp
+import scipy.io
+from sklearn.model_selection import train_test_split
+
 
 np.random.seed(1)
 
@@ -181,12 +184,51 @@ def update_parameters(parameters,grads,learning_rate):
         parameters['W'+str(l+1)]=parameters['W'+str(l+1)]-learning_rate*grads['dW'+str(l+1)]
         parameters['b'+str(l+1)]=parameters['b'+str(l+1)]-learning_rate*grads['db'+str(l+1)]
 
-X=np.array([[2,3,0,1,-1],[3,-3,4,1,4]])
+    return parameters
 
-A,activation_cache=relu(X)
-print(A,'\n',activation_cache)
 
-print(SMALL)
+file=scipy.io.loadmat('data.mat')
+X_data=file['X']
+Y_data=file['y']
+
+m=X_data.shape[0]
+
+
+
+print(X_data.shape,Y_data.shape)
+
+X_train,X_test,Y_train,Y_test=train_test_split(X_data,Y_data,train_size=0.8,random_state=1)
+
+X_train=X_train.T
+Y_train=Y_train.T
+X_test=X_test.T
+Y_test=Y_test.T
+
+layer_dims=[X_train.shape[0],20,3,1]
+
+parameters=initialize_parameters_deep(layer_dims)
+
+num_iterations=10000
+
+def model(X_train,Y_train,parameters,num_iterations,learning_rate=0.3):
+    
+    for i in range(num_iterations):
+        
+        Al,caches=L_model_forward(X_train,parameters)
+
+        
+
+        cost=compute_cost(Al,Y_train)
+        
+        if i%10000==0:
+            print (cost)
+        grads=L_model_backward(Al,Y_train,caches)
+
+        parameters=update_parameters(parameters,grads,learning_rate)
+    
+    return parameters
+
+parameters=model(X_train,Y_train,parameters,num_iterations)
 
 
 # parameters=initialize_parameters_deep([5,4,3])
