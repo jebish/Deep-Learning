@@ -281,8 +281,8 @@ def model(x,y,layer_dims,keep_prob,learning_rate=0.3,seed=1,num_of_iteration=100
             parameters=update_parameters(parameters,grads,learning_rate)
             
 
-        if i%1000==0:
-            print (costs[i])
+        if i%100==0:
+            print (cost)
     
     plt.plot(np.squeeze(costs))
     plt.show()
